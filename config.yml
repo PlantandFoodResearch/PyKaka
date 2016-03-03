@@ -1,0 +1,6 @@
+mongo:
+    port: 27017
+    host: mongo
+web:
+    port: 8000
+    host: web
