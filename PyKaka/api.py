@@ -62,7 +62,7 @@ class Kaka:
         print(qry_str)
         return pd.read_csv(qry_str)
 
-    def qry(realm, expr, mode="pql", cfg=Config("config.yml")):
+    def qry(realm, expr, mode="pql", cfg=Config()):
         if(mode == "pql"):
             return Kaka.qry_pql(realm, expr, cfg=cfg)
         else:
