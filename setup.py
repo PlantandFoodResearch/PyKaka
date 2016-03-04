@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-setup(name='Kaka API',
+setup(name='PyKaka',
       version='0.1',
       description='Python API for Kaka',
       author='Helge Dzierzon',
