@@ -27,8 +27,11 @@ class Kaka:
         port = cfg["mongo"]["port"]
 
         client = MongoClient(host, port)
-        db = client.primary
-        coll = eval("db." + realm)
+        db = client["primary"]
+        try:
+            coll = eval("db." + realm)
+        except:
+            raise Exception("realm not found")
         qry = pql.find(qry)
         res = coll.find(qry)
         dat = []
