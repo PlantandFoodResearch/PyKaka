@@ -9,9 +9,18 @@ import yaml
 
 class Config:
     cfg = None
-    def __init__(self, fn):
-        s = open(fn, "r")
-        self.cfg = yaml.load(s)
+    def __init__(self, fn=None):
+        if fn:
+            s = open(fn, "r")
+            self.cfg = yaml.load(s)
+        else:
+            cfg = {
+                'mongo_host':'mongo',
+                'mongo_port': 27017,
+                'web_host': 'web',
+                'web_port': 80,
+            }
+
 
     def __getitem__(self,index):
         if index in self.cfg:
@@ -20,11 +29,13 @@ class Config:
             raise Exception("ERROR in kaka.py: Config not found in config.yml")
 
 
+
+
 class Kaka:
     @staticmethod
-    def qry_mongo(realm, qry, cfg=Config("config.yml")):
-        host = cfg["mongo"]["host"]
-        port = cfg["mongo"]["port"]
+    def qry_mongo(realm, qry, cfg=Config()):
+        host = cfg["mongo_host"]
+        port = cfg["mongo_port"]
 
         client = MongoClient(host, port)
         db = client["primary"]
@@ -40,13 +51,13 @@ class Kaka:
         return pd.DataFrame(dat)
 
     @staticmethod
-    def qry_pql(realm, expr, cfg=Config("config.yml")):
+    def qry_pql(realm, expr, cfg=Config()):
         if(re.search("[a-zA-Z0-9\\s\'\"]=[a-zA-Z0-9\\s\'\"]",expr)):
             print("ERROR: You seem to have a single = in your expression. If it is a comparison operator use ==.")
             return None
        
-        host = cfg["web"]["host"]
-        port = cfg["web"]["port"]
+        host = cfg["web_host"]
+        port = cfg["web_port"]
 
         qry_str = expr
         qry_str = "http://" + host + ":" + str(port) + "/qry/" + realm + "/?infmt=python&qry=%s" % qry_str
