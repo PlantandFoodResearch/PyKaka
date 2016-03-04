@@ -1,5 +1,4 @@
 import csv
-from urllib import request, parse
 import re
 import pandas as pd
 from pymongo import MongoClient
