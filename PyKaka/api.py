@@ -29,8 +29,6 @@ class Config:
             raise Exception("ERROR in kaka.py: Config not found in config.yml")
 
 
-
-
 class Kaka:
     @staticmethod
     def qry_mongo(realm, qry, cfg=Config()):
@@ -40,7 +38,7 @@ class Kaka:
         client = MongoClient(host, port)
         db = client["primary"]
         try:
-            coll = eval("db." + realm)
+            coll = db[realm]
         except:
             raise Exception("realm not found")
         qry = pql.find(qry)
