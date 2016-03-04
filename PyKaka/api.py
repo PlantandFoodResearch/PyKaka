@@ -13,7 +13,7 @@ class Config:
             s = open(fn, "r")
             self.cfg = yaml.load(s)
         else:
-            cfg = {
+            self.cfg = {
                 'mongo_host':'mongo',
                 'mongo_port': 27017,
                 'web_host': 'web',
@@ -61,6 +61,7 @@ class Kaka:
         print(qry_str)
         return pd.read_csv(qry_str)
 
+    @staticmethod
     def qry(realm, expr, mode="pql", cfg=Config()):
         if(mode == "pql"):
             return Kaka.qry_pql(realm, expr, cfg=cfg)
