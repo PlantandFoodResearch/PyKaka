@@ -2,6 +2,7 @@ import csv
 import re
 import pandas as pd
 from pymongo import MongoClient
+from urllib import parse
 import pql
 import yaml
 
