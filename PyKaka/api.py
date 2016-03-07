@@ -2,6 +2,7 @@ import csv
 import re
 import pandas as pd
 from pymongo import MongoClient
+from urllib import parse
 import pql
 import yaml
 
@@ -56,8 +57,8 @@ class Kaka:
         host = cfg["web_host"]
         port = cfg["web_port"]
 
-        qry_str = expr
-        qry_str = "http://" + host + ":" + str(port) + "/qry/" + realm + "/?infmt=python&qry=%s" % qry_str
+        qry_str = parse.urlencode({"qry":expr, "infmt": "python"})
+        qry_str = "http://" + host + ":" + str(port) + "/qry/" + realm + "/?%s" % qry_str
         print(qry_str)
         return pd.read_csv(qry_str)
 
