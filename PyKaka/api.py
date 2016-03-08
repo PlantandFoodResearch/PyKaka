@@ -30,14 +30,15 @@ class Config:
 
 
 def urlencode_qry(qry):
-    if sys.version_info > (3, 0):
+    print("Processing: " + qry)
+    if sys.version_info >= (3, 0):
         from urllib import parse    
         return  parse.urlencode({"qry":qry, "infmt": "python"})
-    elif sys.version_info > (2, 6):
+    elif sys.version_info > (2, 6) and sys.version_info  <  (3,0):
         import urllib
         return urllib.urlencode({"qry":qry, "infmt": "python"})
     else:
-        raise Exception("Requires python > 2.6")
+        raise Exception("PyKaka requires python > 2.6")
 
 
 class Kaka:
