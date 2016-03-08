@@ -2,9 +2,9 @@ import csv
 import re
 import pandas as pd
 from pymongo import MongoClient
-from urllib import parse
 import pql
 import yaml
+import sys
 
 
 class Config:
@@ -27,6 +27,17 @@ class Config:
             return self.cfg[index]
         else:
             raise Exception("ERROR in kaka.py: Config not found in config.yml")
+
+
+def urlencode_qry(qry):
+    if sys.version_info > (3, 0):
+        from urllib import parse    
+        return  parse.urlencode({"qry":qry, "infmt": "python"})
+    else if sys.version_info > (2, 6):
+        import urllib
+        return urllib.urlencode(qry)
+    else:
+        raise Exception("Requires python > 2.6")
 
 
 class Kaka:
@@ -57,15 +68,19 @@ class Kaka:
         host = cfg["web_host"]
         port = cfg["web_port"]
 
-        qry_str = parse.urlencode({"qry":expr, "infmt": "python"})
+        qry_str = urlencode_qry(expr)
         qry_str = "http://" + host + ":" + str(port) + "/qry/" + realm + "/?%s" % qry_str
         print(qry_str)
         return pd.read_csv(qry_str)
 
     @staticmethod
-    def qry(realm, expr, mode="pql", cfg=Config()):
+    def qry(realm, expr, mode="pql", columns = None, cfg=Config()):
         if(mode == "pql"):
-            return Kaka.qry_pql(realm, expr, cfg=cfg)
+            dat = Kaka.qry_pql(realm, expr, cfg=cfg)
         else:
-            return Kaka.qry_mongo(realm, expr, cfg=cfg)
+            dat = Kaka.qry_mongo(realm, expr, cfg=cfg)
 
+        if columns:
+            return pd.DataFrame(dat, columns=columns)
+        else:
+            return dat
