@@ -33,7 +33,7 @@ def urlencode_qry(qry):
     if sys.version_info > (3, 0):
         from urllib import parse    
         return  parse.urlencode({"qry":qry, "infmt": "python"})
-    else if sys.version_info > (2, 6):
+    elif sys.version_info > (2, 6):
         import urllib
         return urllib.urlencode(qry)
     else:
