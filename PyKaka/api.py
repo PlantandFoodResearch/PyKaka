@@ -35,7 +35,7 @@ def urlencode_qry(qry):
         return  parse.urlencode({"qry":qry, "infmt": "python"})
     elif sys.version_info > (2, 6):
         import urllib
-        return urllib.urlencode(qry)
+        return urllib.urlencode({"qry":qry, "infmt": "python"})
     else:
         raise Exception("Requires python > 2.6")
 
