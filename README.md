@@ -9,7 +9,7 @@
 
 ## Background 
 
-PyKaka is a Python API for downloading data from Kaka [kaka](https://github.com/hdzierz/Kaka). The Python API works from any python 2.7 and 3.5+ python installation. Kaka can be run using docker and comes with a Pyrat pre-installed. If you e.g. load Kaka on server just-a-test.powerplant.pfr.co.nz then your Pyrat jupyter notebookd will run on just-a-test.powerplant.pfr.co.nz:8889. 
+PyKaka is a Python API for downloading data from [Kaka](https://github.com/hdzierz/Kaka). The Python API works from any python 2.7 and 3.5+ python installation. Kaka can be run using docker and comes with a Pyrat pre-installed. If you e.g. load Kaka on server just-a-test.powerplant.pfr.co.nz then your Pyrat jupyter notebookd will run on just-a-test.powerplant.pfr.co.nz:8889. 
 
 ### Installation
 
@@ -51,7 +51,7 @@ This is a pql query. For more info see: [pql](https://github.com/alonho/pql)
 
 Return value:
 
-The return value is a pandas data frame [pandas](http://pandas.pydata.org/).
+The return value is a [pandas](http://pandas.pydata.org/) data frame.
 
 **Example:**
 
