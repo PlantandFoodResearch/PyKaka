@@ -1,24 +1,22 @@
 # Python API for Kaka
 
-## Tools
+## Tools used
 
-- R/knitr
 - Python 2/3
 - Mongo connectors
-- KAkAs restful API
+- KAKAs restful API
 - Jupyter notebooks in form of a Pyrat
 
 ## Background 
 
+PyKaka is a Python API for downloading data from Kaka [kaka](https://github.com/hdzierz/Kaka). The Python API works from any python 2.7 and 3.5+ python installation. Kaka can be run using docker and comes with a Pyrat pre-installed. If you e.g. load Kaka on server just-a-test.powerplant.pfr.co.nz then your Pyrat jupyter notebookd will run on just-a-test.powerplant.pfr.co.nz:8889. 
 
-The Python API works from any python 2.7 and 3.5+ python installation. Kaka itself comes with a Pyrat pre-installed. If you e.g. load Kaka on server just-a-test.powerplant.pfr.co.nz then your Pyrat jupyter notebookd will run on just-a-test.powerplant.pfr.co.nz:8889. 
+### Installation
 
-You can use the API though in a "plain" python script. 
-
-When using A Kaka docker setup you will have a pyrat running on port 8889. You will find that the Kaka Python API has been pre-installed. Thus, the following import just works:
+When using A Kaka docker setup you will have a pyrat running on port 8889. You will find that the Kaka Python API has been pre-installed. Thus, the following import should just work:
 
 ```
-from Kaka.api import *
+from PyKaka.api import *
 ```
 
 If it does not you need to install it via:
@@ -40,7 +38,7 @@ Whereby:
 "realm" can currrently be:
 
 - genotype
-- seafood
+- kiwifruit
 
 "qry":
 
@@ -53,14 +51,14 @@ This is a pql query. For more info see: [pql](https://github.com/alonho/pql)
 
 Return value:
 
-The return valeu is a pandas data frame.
+The return value is a pandas data frame [pandas](http://pandas.pydata.org/).
 
 **Example:**
 
-To obtain data from Kaka you run (:
+The databse is loaded with a gene expression data set. To obtain these data from Kaka you run:
 
 ```
-dat = Kaka.qry('genotype', "experiment=='gene_expression' and gene='AT1G02930.2'")
+dat = Kaka.qry('genotype', "experiment=='gene_expression' and gene=='AT1G02930.2'")
 print(dat)
 ```
 
@@ -122,6 +120,26 @@ print(dat)
 </table>
 <p>1 rows × 48 columns</p>
 </div>
+
+Gene expression data (any data really) can be supplemented with exprimental design information similar to teh old micro array targets file [targets](http://svitsrv25.epfl.ch/R-doc/library/limma/html/readTargets.html):
+
+```
+dat = Kaka.qry('design', "experiment=='gene_expression'")
+print(dat)
+```
+
+```
+     phenotype  condition         typ
+0  PFD1001L3R1    treated  paired-end
+1  PFD1001L3R2    treated  paired-end
+2  PFD1001L4R1    treated  paired-end
+3  PFD1001L4R2    treated  paired-end
+4  PFD1002L3R1  untreated  paired-end
+5  PFD1002L3R2  untreated  paired-end
+6  PFD1002L4R1  untreated  paired-end
+7  PFD1002L4R2  untreated  paired-end
+```
+
 
 
 
