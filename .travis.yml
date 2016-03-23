@@ -11,7 +11,6 @@ python:
 #    pip install -r req.txt
 
 scripts:
-    pip install -r req.txt
     python tests.py
 
 notifications:
