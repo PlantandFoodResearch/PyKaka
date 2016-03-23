@@ -7,10 +7,11 @@ python:
   - "nightly" # currently points to 3.6-dev
 
 # command to install dependencies
-install: "pip install -r req.txt"
+install: 
+    pip install -r req.txt
+    pip install git+https://github.com/hdzierz/PyKaka.git
 
 scripts:
-    pip install git+https://github.com/hdzierz/PyKaka.git
     python tests.py
 
 notifications:
