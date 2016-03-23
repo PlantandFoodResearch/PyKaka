@@ -10,7 +10,7 @@ python:
 #install: 
 #    pip install -r req.txt
 
-scripts:
+script:
     - python tests.py
 
 notifications:
