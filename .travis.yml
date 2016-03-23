@@ -9,7 +9,6 @@ python:
 # command to install dependencies
 install: 
     pip install -r req.txt
-    pip install git+https://github.com/hdzierz/PyKaka.git
 
 scripts:
     python tests.py

@@ -3,4 +3,4 @@ pandas
 pql
 pymongo
 pyyaml
-
+git+https://github.com/hdzierz/PyKaka.git
