@@ -38,7 +38,8 @@ Whereby:
 "realm" can currrently be:
 
 - genotype
-- kiwifruit
+- design
+- experiment
 
 "qry":
 
