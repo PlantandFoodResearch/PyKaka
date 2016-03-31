@@ -11,7 +11,7 @@
 
 PyKaka is a Python API for downloading data from [Kaka](https://github.com/hdzierz/Kaka). The Python API works from any python 2.7 and 3.5+ python installation. Kaka can be run using docker and comes with a Pyrat pre-installed. If you e.g. load Kaka on server just-a-test.powerplant.pfr.co.nz then your Pyrat jupyter notebookd will run on just-a-test.powerplant.pfr.co.nz:8889. 
 
-### Installation
+## Installation
 
 When using A Kaka docker setup you will have a pyrat running on port 8889. You will find that the Kaka Python API has been pre-installed. Thus, the following import should just work:
 
@@ -25,7 +25,7 @@ If it does not you need to install it via:
 pip install git+https://github.com/hdzierz/PyKaka.git
 ```
 
-### Queries
+## Queries
  
 The syntax for the API is as follows:
 
@@ -58,7 +58,7 @@ The return value is a [pandas](http://pandas.pydata.org/) data frame.
 The databse is loaded with a gene expression data set. To obtain these data from Kaka you run:
 
 ```
-dat = Kaka.qry('genotype', "experiment=='gene_expression' and gene=='AT1G02930.2'")
+dat = Kaka.qry('genotype', "experiment=='Gene Expression' and gene=='AT1G02930.2'")
 print(dat)
 ```
 
@@ -124,7 +124,7 @@ print(dat)
 Gene expression data (any data really) can be supplemented with exprimental design information similar to teh old micro array targets file [targets](http://svitsrv25.epfl.ch/R-doc/library/limma/html/readTargets.html):
 
 ```
-dat = Kaka.qry('design', "experiment=='gene_expression'")
+dat = Kaka.qry('design', "experiment=='Gene Expression'")
 print(dat)
 ```
 
