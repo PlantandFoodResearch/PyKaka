@@ -85,3 +85,7 @@ class Kaka:
             return pd.DataFrame(dat, columns=columns)
         else:
             return dat
+
+    @staticmethod
+    def send(realm, config, data):
+        pass
