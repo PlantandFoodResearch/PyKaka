@@ -5,7 +5,7 @@ from pymongo import MongoClient
 import pql
 import yaml
 import sys
-
+import json 
 
 class Config:
     cfg = None
@@ -87,5 +87,13 @@ class Kaka:
             return dat
 
     @staticmethod
-    def send(realm, config, data):
-        pass
+    def send(data, config, key, host="web", port="80"):
+        ser = json.dumps(data)
+        config = json.dumps(config)
+        opener = urllib2.build_opener(urllib2.HTTPHandler)
+        request = urllib2.Request('http://' + host + ":" + port  +  '/send',
+                          data='dat='+ser+"&key="+key+"&config="+config+"&first", 
+                          headers={'User-Agent' : "Magic Browser"})
+        request.get_method = lambda: 'POST'
+        url = opener.open(request)
+        print(url.read()) 
