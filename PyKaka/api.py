@@ -29,13 +29,21 @@ class Config:
             raise Exception("ERROR in kaka.py: Config not found in config.yml")
 
 
-def urlencode_qry(qry):
-    print("Processing: " + qry)
+def load_urllib():
     if sys.version_info >= (3, 0):
-        from urllib import parse    
-        return  parse.urlencode({"qry":qry, "infmt": "python"})
+        from urllib import parse
     elif sys.version_info > (2, 6) and sys.version_info  <  (3,0):
         import urllib
+    else:
+        raise Exception("PyKaka requires python > 2.6")
+
+
+def urlencode_qry(qry):
+    print("Processing: " + qry)
+    load_urllib()
+    if sys.version_info >= (3, 0):
+        return  parse.urlencode({"qry":qry, "infmt": "python"})
+    elif sys.version_info > (2, 6) and sys.version_info  <  (3,0):
         return urllib.urlencode({"qry":qry, "infmt": "python"})
     else:
         raise Exception("PyKaka requires python > 2.6")
@@ -88,6 +96,7 @@ class Kaka:
 
     @staticmethod
     def send(data, config, key, host="web", port="80"):
+        load_urllib()
         ser = json.dumps(data)
         config = json.dumps(config)
         opener = urllib2.build_opener(urllib2.HTTPHandler)
