@@ -7,6 +7,19 @@ import yaml
 import sys
 import json 
 
+MODE = "python2"
+if sys.version_info >= (3, 0):
+    print("Loading urllib for python3")
+    import urllib.request as urll
+    import urllib.parse as parse
+    MODE="python3"
+elif sys.version_info > (2, 6) and sys.version_info  <  (3,0):
+    import urllib
+    import urllib2 as urll
+else:
+    raise Exception("PyKaka requires python > 2.6")
+
+
 class Config:
     cfg = None
     def __init__(self, fn=None):
@@ -28,19 +41,17 @@ class Config:
         else:
             raise Exception("ERROR in kaka.py: Config not found in config.yml")
 
+    def __setitem__(self,index,value):
+        if index in self.cfg:
+            self.cfg[index] = value
+        else:
+            raise Exception("ERROR in kaka.py: Config not found in config.yml")
+            
 
-def load_urllib():
-    if sys.version_info >= (3, 0):
-        from urllib import parse
-    elif sys.version_info > (2, 6) and sys.version_info  <  (3,0):
-        import urllib
-    else:
-        raise Exception("PyKaka requires python > 2.6")
-
+cfg = Config()
 
 def urlencode_qry(qry):
     print("Processing: " + qry)
-    load_urllib()
     if sys.version_info >= (3, 0):
         return  parse.urlencode({"qry":qry, "infmt": "python"})
     elif sys.version_info > (2, 6) and sys.version_info  <  (3,0):
@@ -95,14 +106,43 @@ class Kaka:
             return dat
 
     @staticmethod
-    def send(data, config, key, host="web", port="80"):
-        load_urllib()
+    def send_p2(data, config, host="web", port="80"):
         ser = json.dumps(data)
         config = json.dumps(config)
-        opener = urllib2.build_opener(urllib2.HTTPHandler)
-        request = urllib2.Request('http://' + host + ":" + port  +  '/send',
-                          data='dat='+ser+"&key="+key+"&config="+config+"&first", 
+        opener = urll.build_opener(urll.HTTPHandler)
+        request = urll.Request('http://' + host + ":" + port  +  '/send',
+                          data='dat='+ser+"&config="+config+"&first", 
+                          headers={'User-Agent' : "Magic Browser"})
+        request.get_method = lambda: 'POST'
+        print(request)
+        url = opener.open(request)
+        print(url.read()) 
+
+    @staticmethod
+    def send_p3(data, config, key, host="web", port="80"):
+        ser = json.dumps(data)
+        config = json.dumps(config)
+        opener = urll.build_opener(urll.HTTPHandler)
+       
+        data = parse.urlencode({'dat':ser,"config":config})
+        data = data.encode('ascii') 
+        request = urll.Request('http://' + host + ":" + port  +  '/send',
+                          data=data, 
                           headers={'User-Agent' : "Magic Browser"})
         request.get_method = lambda: 'POST'
         url = opener.open(request)
-        print(url.read()) 
+        print(url.read())
+
+    @staticmethod
+    def send(data, config, cfg=Config()):
+        global MODE
+        host = cfg["web_host"]
+        port = str(cfg["web_port"])
+
+        if(hasattr(data, "to_dict")):
+            data = data.to_dict(orient="records")
+        if(MODE == "python3"):
+            Kaka.send_p3(data, config, host, port)
+        else:
+            Kaka.send_p2(data, config, host, port)
+
