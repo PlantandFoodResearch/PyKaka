@@ -193,14 +193,14 @@ The configuration dict needs the following entries:
  - Password: Allpocate a password. This will protect your experiment from others
  - PI: Who is the PI of the experiment
  - Realm: The realm your experiment belongs to (e.g. Genotype or Seafood). You cannot create a new one. Please contact admin as above
- - Mode: Can be "Clean", "Override", "Append"
-- Data
+- DataSource
  - Format: Can only be **python_dict** at the moment
  - ID Column: Your data requires a unique ID column
  - Name: This can be either a path to a file or a unique name of your data set
  - Group: Data might be grouped in an experiment like treatments [optional]
  - Creator: Who has craeted the data?
  - Contact: A contact email address 
+ - Mode: Can be "Clean", "Override", "Append"
 
 Just a wee explanation about the **Mode**:
 
@@ -213,7 +213,7 @@ Just a wee explanation about the **Mode**:
 
 ```
 config = {
-    "Data":{
+    "DataSource":{
         "Format": "python_dict",
         "ID Column": "rs#" , 
         "Name": '/tmp/',
