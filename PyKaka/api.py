@@ -69,7 +69,7 @@ class Kaka:
         client = MongoClient(host, port)
         db = client["primary"]
         try:
-            coll = db[realm]
+            coll = db[realm.lower()]
         except:
             raise Exception("realm not found")
         qry = pql.find(qry)
@@ -77,6 +77,7 @@ class Kaka:
         dat = []
         for d in res:
             dat.append(d)
+        print("mongo://" + host + ":" + str(port) + "/" + qry)
         return pd.DataFrame(dat)
 
     @staticmethod
