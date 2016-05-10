@@ -234,7 +234,15 @@ config = {
 }
 ```
 
+## Configuring teh host and port
 
+If you don't acccess the pyrat docker instance you  need to configure the host and port. PyKaka uses a cfg structure:
+
+```
+cfg["web_host"] = 'biopvm201.pfr.co.nz'
+cfg["web_port"] = "8001"
+Kaka.qry(..., cfg=cfg)
+```
 
 
 
