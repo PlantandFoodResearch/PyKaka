@@ -9,11 +9,12 @@ import json
 
 MODE = "python2"
 if sys.version_info >= (3, 0):
-    print("Loading urllib for python3")
+    print("Loading urllib for python 3")
     import urllib.request as urll
     import urllib.parse as parse
     MODE="python3"
 elif sys.version_info > (2, 6) and sys.version_info  <  (3,0):
+    print("Loading urllib for python >=2.7")
     import urllib
     import urllib2 as urll
 else:
@@ -39,13 +40,13 @@ class Config:
         if index in self.cfg:
             return self.cfg[index]
         else:
-            raise Exception("ERROR in kaka.py: Config not found in config.yml")
+            raise Exception("ERROR: " + str(index)  +  " not found in config.")
 
     def __setitem__(self,index,value):
         if index in self.cfg:
             self.cfg[index] = value
         else:
-            raise Exception("ERROR in kaka.py: Config not found in config.yml")
+            raise Exception("ERROR: " + str(index)  +  " not found in config.")
             
 
 cfg = Config()
@@ -58,6 +59,54 @@ def urlencode_qry(qry):
         return urllib.urlencode({"qry":qry, "infmt": "python"})
     else:
         raise Exception("PyKaka requires python > 2.6")
+
+
+def check_config(cfg):
+    if not "DataSource" in cfg:
+        print("Config needs a 'DataSource'")
+        return False
+    if not "Experiment" in cfg:
+        print("Config needs 'Experiment' info")
+        return False
+
+    ds = cfg["DataSource"]
+    if not "Format" in ds:
+        print("Config DataSource needs a 'Format'.")
+        return False
+    if not "ID Column" in ds:
+        print("The DataSource needs a unique 'ID Column'.")
+        return False
+    if not "Name" in ds:
+        print("The DataSource needs a unique 'Name'. Can be  file name or complete path.")
+        return False
+    if not "Creator" in ds:
+        print("DataSource does not know who has created it (Creator)")
+        return False
+    if not "Mode" in ds:
+        print("DataSource does need a loading 'Mode' (Override, Clean, Append)")
+        return False
+    if not "Contact" in ds:
+        print("DataSource needs a 'Contact' email")
+        return False
+
+    ex = cfg["Experiment"]
+    if not "Code" in ex:
+        print("Experiment needs a unique name ('Code')")
+        return False
+    if not "Date" in ex:
+        print("Experiment needs a 'Date'")
+        return False
+    if not "Realm" in ex:
+        print("Experiment needs a 'Realm'")
+        return False
+    if not "Password" in ex:
+        print("Please specify a 'Password' for your experiment. It will prptect your data from being accidentally overriden by someone else.")
+        return False
+    if not "PI" in ex:
+        print("Experiment would like to know who the PI is")
+        return False
+
+    return True
 
 
 class Kaka:
@@ -135,8 +184,10 @@ class Kaka:
         print(url.read())
 
     @staticmethod
-    def send(data, config, cfg=Config()):
-        global MODE
+    def send(data, config, cfg=cfg):
+        if not check_config(config):
+            return False
+
         host = cfg["web_host"]
         port = str(cfg["web_port"])
 
