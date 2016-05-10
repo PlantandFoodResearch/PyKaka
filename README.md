@@ -167,11 +167,11 @@ print(dat)
 
 ## Getting Data In
 
-PyKaka has the ability to process data into the database. All data will be associated with an Experiment. Each Experiment has a unique name. The name is impartant as
- all operations (delete data, reload data, load data) will be associated with that name. There cannot be two Experiments with the same name. The Experiment also requires
+PyKaka has the ability to process data into the database. All data will be associated with an Experiment as well as a DataSource. Each Experiment and DataSource has a unique name. These names are impartant as
+ all operations (delete data, reload data, load data) will be associated with them. There cannot be two Experiments or DataSources with the same name. The Experiment also requires
 some basic meta info (please see config file below).
 
-The method is called "send" and is part of teh Kaka api:
+The method you can use for sending data is called "send" and is part of the Kaka api:
 
 ```
 Kaka.send(data,config)
@@ -190,7 +190,7 @@ The configuration dict needs the following entries:
  - Code: A unique name of the experiment the data are associated with. Please use characters, numbers and underscores only.
  - Date: The Date of your experiment
  - Description: A brief description of your experiment
- - Password: Allpocate a password. This will protect your experiment from others
+ - Password: Allocate a password. This will protect your experiment from others overriding your data.
  - PI: Who is the PI of the experiment
  - Realm: The realm your experiment belongs to (e.g. Genotype or Seafood). You cannot create a new one. Please contact admin as above
 - DataSource
@@ -204,9 +204,10 @@ The configuration dict needs the following entries:
 
 Just a wee explanation about the **Mode**:
 
-**Override:** This will delete all data in the experiment before your data is loaded. 
-**Clean:** This will delete all data assocoated with your experiment
-**Append:** Append will not delete anything but append all data you specify to the experiment 
+**Override:** This will delete all data in the experiment for your DataSource before your data is loaded. 
+**Clean:** This will delete all data in a DataSource associated with your experiment
+**Append:** Append will not delete anything but append all data you specify to the DataSource in an Experiment 
+**Destroy:** All above modes leave  trace of the experiment and DataSources. Destroy will also clean those.
 
 
 ** Example of a config dict for loading a hapmap into Kaka:**
