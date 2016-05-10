@@ -126,7 +126,7 @@ class Kaka:
         dat = []
         for d in res:
             dat.append(d)
-        print("mongo://" + host + ":" + str(port) + "/" + qry)
+        print("mongo://" + host + ":" + str(port) + "/" + str(qry))
         return pd.DataFrame(dat)
 
     @staticmethod
