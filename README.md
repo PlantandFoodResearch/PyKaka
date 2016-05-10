@@ -40,6 +40,7 @@ Whereby:
 - genotype
 - design
 - experiment
+- term
 
 "qry":
 
@@ -53,6 +54,27 @@ This is a pql query. For more info see: [pql](https://github.com/alonho/pql)
 Return value:
 
 The return value is a [pandas](http://pandas.pydata.org/) data frame.
+
+Query for an ID:
+
+IDs are unfirntunately a but special as we have a MongoDB in the background. I do promise to simplify this. However, teh query for an ID goes as follows:
+
+```
+dat = Kaka.qry('genotype', "_id=id(a_key)")
+print(dat)
+
+```
+
+Or linking to a reference:
+
+```
+dat = Kaka.qry('genotype', "experiment_obj=id(a_key)")
+print(dat)
+
+```
+
+Important is that you wrap the 'id' function around the Mongo ID. 
+
 
 **Example:**
 
@@ -140,6 +162,77 @@ print(dat)
 6  PFD1002L4R1  untreated  paired-end
 7  PFD1002L4R2  untreated  paired-end
 ```
+
+
+
+## Getting Data In
+
+PyKaka has the ability to process data into the database. All data will be associated with an Experiment. Each Experiment has a unique name. The name is impartant as
+ all operations (delete data, reload data, load data) will be associated with that name. There cannot be two Experiments with the same name. The Experiment also requires
+some basic meta info (please see config file below).
+
+The method is called "send" and is part of teh Kaka api:
+
+```
+Kaka.send(data,config)
+```
+
+Whereby:
+
+- data is your data set which can be either a pandas DataFrame or an array of dicts. **The data needs a unique ID column!** 
+- config is a configuration dict
+
+**The configuration dict:**
+
+The configuration dict needs the following entries:
+
+- Experiment 
+ - Code: A unique name of the experiment the data are associated with. Please use characters, numbers and underscores only.
+ - Date: The Date of your experiment
+ - Description: A brief description of your experiment
+ - Password: Allpocate a password. This will protect your experiment from others
+ - PI: Who is the PI of the experiment
+ - Realm: The realm your experiment belongs to (e.g. Genotype or Seafood). You cannot create a new one. Please contact admin as above
+- DataSource
+ - Format: Can only be **python_dict** at the moment
+ - ID Column: Your data requires a unique ID column
+ - Name: This can be either a path to a file or a unique name of your data set
+ - Group: Data might be grouped in an experiment like treatments [optional]
+ - Creator: Who has craeted the data?
+ - Contact: A contact email address 
+ - Mode: Can be "Clean", "Override", "Append"
+
+Just a wee explanation about the **Mode**:
+
+**Override:** This will delete all data in the experiment before your data is loaded. 
+**Clean:** This will delete all data assocoated with your experiment
+**Append:** Append will not delete anything but append all data you specify to the experiment 
+
+
+** Example of a config dict for loading a hapmap into Kaka:**
+
+```
+config = {
+    "DataSource":{
+        "Format": "python_dict",
+        "ID Column": "rs#" , 
+        "Name": '/tmp/',
+        "Group": "None",
+        "Creator": "Helge",
+        "Contact": "helge.dzierzon@plantandfood.co.nz",
+    },
+    "Experiment":{
+        "Code": "HapMap_Test",
+        "Date": "2016-01-07",
+        "Description": "REST test",
+        "Realm": "Genotype",
+        "Mode": "Override",
+        "Password": "inkl67z",
+        "PI": "Willi Wimmer"
+    }
+}
+```
+
 
 
 
