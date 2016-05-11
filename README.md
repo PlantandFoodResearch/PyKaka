@@ -229,7 +229,8 @@ config = {
         "Realm": "Genotype",
         "Mode": "Override",
         "Password": "inkl67z",
-        "PI": "Willi Wimmer"
+        "PI": "Willi Wimmer",
+        "Species": "Cymbidium",
     }
 }
 ```
