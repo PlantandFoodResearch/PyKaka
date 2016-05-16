@@ -61,7 +61,7 @@ def urlencode_qry(qry):
         raise Exception("PyKaka requires python > 2.6")
 
 
-def check_config(cfg, send_mode):
+def check_config(cfg):
     if not "DataSource" in cfg:
         print("Config needs a 'DataSource'")
         return False
@@ -73,19 +73,19 @@ def check_config(cfg, send_mode):
     if not "Format" in ds:
         print("Config DataSource needs a 'Format'.")
         return False
-    if not "ID_Column" in ds and send_mode=="complete":
+    if not "ID_Column" in ds:
         print("The DataSource needs a unique 'ID_Column'.")
         return False
     if not "Name" in ds:
         print("The DataSource needs a unique 'Name'. Can be  file name or complete path.")
         return False
-    if not "Creator" in ds and send_mode=="complete":
+    if not "Creator" in ds:
         print("DataSource does not know who has created it (Creator)")
         return False
     if not "Mode" in ds:
         print("DataSource does need a loading 'Mode' (Override, Clean, Append)")
         return False
-    if not "Contact" in ds and send_mode=="complete":
+    if not "Contact" in ds:
         print("DataSource needs a 'Contact' email")
         return False
 
@@ -93,16 +93,16 @@ def check_config(cfg, send_mode):
     if not "Code" in ex:
         print("Experiment needs a unique name ('Code')")
         return False
-    if not "Date" in ex and send_mode=="complete":
+    if not "Date" in ex:
         print("Experiment needs a 'Date'")
         return False
-    if not "Realm" in ex and send_mode=="complete":
+    if not "Realm" in ex:
         print("Experiment needs a 'Realm'")
         return False
     if not "Password" in ex:
         print("Please specify a 'Password' for your experiment. It will protect your data from being accidentally overriden by someone else.")
         return False
-    if not "PI" in ex and send_mode=="complete":
+    if not "PI" in ex:
         print("Experiment would like to know who the PI is")
         return False
 
