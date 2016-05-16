@@ -9,6 +9,14 @@ setup(name='PyKaka',
       author_email='helge.dzierzon@plantandfood.co.nz',
       url='',
       packages=['PyKaka'],
-     )
-
+      install_requires=[
+        'numpy',
+        'pql',
+        'pymongo',
+        'pyyaml',
+        'xlrd',
+        'simplejson',
+        'pandas',
+      ],
+)
 
