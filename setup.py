@@ -12,3 +12,13 @@ setup(name='PyKaka',
      )
 
 
+install_requires=[
+   'numpy',
+   'pql',
+   'pymongo',
+   'pyyaml',
+   'xlrd',
+   'pandas',
+]
+
+
