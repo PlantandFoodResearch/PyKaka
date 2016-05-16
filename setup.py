@@ -15,6 +15,7 @@ setup(name='PyKaka',
         'pymongo',
         'pyyaml',
         'xlrd',
+        'simplejson',
         'pandas',
       ],
 )
