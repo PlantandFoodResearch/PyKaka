@@ -61,7 +61,7 @@ def urlencode_qry(qry):
         raise Exception("PyKaka requires python > 2.6")
 
 
-def check_config(cfg, send_mode):
+def check_config(cfg):
     if not "DataSource" in cfg:
         print("Config needs a 'DataSource'")
         return False
@@ -69,43 +69,43 @@ def check_config(cfg, send_mode):
         print("Config needs 'Experiment' info")
         return False
 
-    ds = cfg["DataSource"]
-    if not "Format" in ds:
-        print("Config DataSource needs a 'Format'.")
-        return False
-    if not "ID_Column" in ds and send_mode=="complete":
-        print("The DataSource needs a unique 'ID_Column'.")
-        return False
-    if not "Name" in ds:
-        print("The DataSource needs a unique 'Name'. Can be  file name or complete path.")
-        return False
-    if not "Creator" in ds and send_mode=="complete":
-        print("DataSource does not know who has created it (Creator)")
-        return False
-    if not "Mode" in ds:
-        print("DataSource does need a loading 'Mode' (Override, Clean, Append)")
-        return False
-    if not "Contact" in ds and send_mode=="complete":
-        print("DataSource needs a 'Contact' email")
-        return False
-
-    ex = cfg["Experiment"]
-    if not "Code" in ex:
-        print("Experiment needs a unique name ('Code')")
-        return False
-    if not "Date" in ex and send_mode=="complete":
-        print("Experiment needs a 'Date'")
-        return False
-    if not "Realm" in ex and send_mode=="complete":
-        print("Experiment needs a 'Realm'")
-        return False
-    if not "Password" in ex:
-        print("Please specify a 'Password' for your experiment. It will protect your data from being accidentally overriden by someone else.")
-        return False
-    if not "PI" in ex and send_mode=="complete":
-        print("Experiment would like to know who the PI is")
-        return False
-
+#    ds = cfg["DataSource"]
+#    if not "Format" in ds:
+#        print("Config DataSource needs a 'Format'.")
+#        return False
+#    if not "ID_Column" in ds:
+#        print("The DataSource needs a unique 'ID_Column'.")
+#        return False
+#    if not "Name" in ds:
+#        print("The DataSource needs a unique 'Name'. Can be  file name or complete path.")
+#        return False
+#    if not "Creator" in ds:
+#        print("DataSource does not know who has created it (Creator)")
+#        return False
+#    if not "Mode" in ds:
+#        print("DataSource does need a loading 'Mode' (Override, Clean, Append)")
+#        return False
+#    if not "Contact" in ds:
+#        print("DataSource needs a 'Contact' email")
+#        return False
+#
+#    ex = cfg["Experiment"]
+#    if not "Code" in ex:
+#        print("Experiment needs a unique name ('Code')")
+#        return False
+#    if not "Date" in ex:
+#        print("Experiment needs a 'Date'")
+#        return False
+#    if not "Realm" in ex:
+#        print("Experiment needs a 'Realm'")
+#        return False
+#    if not "Password" in ex:
+#        print("Please specify a 'Password' for your experiment. It will protect your data from being accidentally overriden by someone else.")
+#        return False
+#    if not "PI" in ex:
+#        print("Experiment would like to know who the PI is")
+#        return False
+#
     return True
 
 
@@ -160,7 +160,9 @@ class Kaka:
         ser = json.dumps(data)
         config = json.dumps(config)
         opener = urll.build_opener(urll.HTTPHandler)
-        request = urll.Request('http://' + host + ":" + port  +  '/send',
+        url = 'http://' + host + ":" + port  +  '/send'
+        print(url)
+        request = urll.Request(url,
                           data='dat='+ser+"&config="+config+"&first", 
                           headers={'User-Agent' : "Magic Browser"})
         request.get_method = lambda: 'POST'
@@ -168,37 +170,50 @@ class Kaka:
         print(url.read()) 
 
     @staticmethod
-    def send_p3(data, config, key, host="web", port="80"):
+    def send_p3(data, config, host="web", port="80"):
         ser = json.dumps(data)
         config = json.dumps(config)
         opener = urll.build_opener(urll.HTTPHandler)
        
         data = parse.urlencode({'dat':ser,"config":config})
-        data = data.encode('ascii') 
-        request = urll.Request('http://' + host + ":" + port  +  '/send',
+        data = data.encode('ascii')
+        url = 'http://' + host + ":" + port  +  '/send'
+        print(url)
+        request = urll.Request(url,
                           data=data, 
                           headers={'User-Agent' : "Magic Browser"})
         request.get_method = lambda: 'POST'
         url = opener.open(request)
         print(url.read())
 
+    @staticmethod
+    def get_config(realm, experiment, data_source, cfg=cfg):
+        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/config?experiment=' + experiment  + '&data_source=' + data_source
+        print(url)
+        req = urll.urlopen(url)
+        config = json.loads(req.read().decode('utf-8'))
+        return config
 
-#    @staticmethod
-#    def send_destroy(realm, experiment, data_source, key, cfg=cfg):
-#        config = {"Experiment": {"Realm": realm, "Code": experiment, "Password": key}, "DataSource":{ "Name": data_source, "Format": "python_dict", "Mode": "Destroy"}}
-#        data = {}
-#        Kaka.send(data, config, cfg, "simple")
-#
-#    @staticmethod
-#    def send_clean(experiment, key, cfg=cfg):
-#         config = {"Experiment": {"Code": experiment}, "DataSource":{ "Name": data_source, "Mode": "Clean"}}
-#         data = {}
-#         Kaka.send(data, config, cfg, "simple")
-#
-#    @staticmethod
-#    def send_override(data, experiment, data_source, key, cfg=cfg):
-#        config = {"Experiment": {"Code": experiment}, "DataSource":{ "Name": data_source, "Mode": "Override"}}
-#        Kaka.send(data, config, cfg, "simple")
+    @staticmethod
+    def send_destroy(realm, experiment, key, cfg=cfg):
+        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Destroy'
+        print(url)
+        req = urll.urlopen(url) 
+        print(req.read())
+        
+    @staticmethod
+    def send_clean(realm, experiment, key, cfg=cfg):
+        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Clean'
+        print(url)
+        req = urll.urlopen(url) 
+        print(req.read())
+
+    @staticmethod               
+    def send_passwd(realm, experiment, key, cfg=cfg):
+        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Resetpwd'
+        print(url)
+        req = urll.urlopen(url)
+        print(req.read())
 
     @staticmethod
     def send(data, config, cfg=cfg):
