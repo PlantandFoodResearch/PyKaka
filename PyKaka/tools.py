@@ -300,3 +300,35 @@ class DictListConnector(DataConnector):
         del self.lst
 
 
+class PandasConnector(DataConnector):
+    header = None
+    df = None
+    current = None
+
+    def __init__(self, df):
+        if(type(df)==pandas.DataFrame):
+            self.df = df
+        if(type(df)==dict): 
+            self.df = pd.DataFrame(df)
+        self.current = iter(self.df.iterrows())
+        self.header = df.columns.values
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.next()
+
+    def next(self):
+        cur = next(self.current)
+        if(cur):
+            return cur[1]
+        else:
+            raise StopIteration
+
+    def all(self):
+        return self.df.to_dict(orient="records")
+
+    def close():
+        pass
+
