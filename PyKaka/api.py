@@ -33,7 +33,7 @@ class Config:
                 'mongo_host':'mongo',
                 'mongo_port': 27017,
                 'web_host': 'web',
-                'web_port': 80,
+                'web_port': '80',
             }
 
     def __getitem__(self,index):
@@ -160,7 +160,7 @@ class Kaka:
         ser = json.dumps(data)
         config = json.dumps(config)
         opener = urll.build_opener(urll.HTTPHandler)
-        url = 'http://' + host + ":" + port  +  '/send'
+        url = 'http://' + host + ":" + str(port)  +  '/send'
         print(url)
         request = urll.Request(url,
                           data='dat='+ser+"&config="+config+"&first", 
@@ -177,7 +177,7 @@ class Kaka:
        
         data = parse.urlencode({'dat':ser,"config":config})
         data = data.encode('ascii')
-        url = 'http://' + host + ":" + port  +  '/send'
+        url = 'http://' + host + ":" + str(port)  +  '/send'
         print(url)
         request = urll.Request(url,
                           data=data, 
