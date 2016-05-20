@@ -72,6 +72,7 @@ import gzip
 import csv
 import xlrd
 import json
+import pandas
 
 ############################
 ## Data connectors are building on teh algoirthms defined in algorithms.py.
@@ -331,4 +332,88 @@ class PandasConnector(DataConnector):
 
     def close():
         pass
+
+class PandasConnector(object):
+    header = None
+    df = None
+    current = None
+
+    def __init__(self, df):
+        if(type(df)==pandas.DataFrame):
+            self.df = df
+        if(type(df)==dict):
+            self.df = pd.DataFrame(df)
+        self.current = iter(self.df.iterrows())
+        self.header = df.columns.values
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.next()
+
+    def next(self):
+        cur = next(self.current)
+        if(cur):
+            return cur[1]
+        else:
+            raise StopIteration
+
+    def all(self):
+        return self.df.to_dict(orient="records")
+
+    def close():
+        pass
+
+def collect_samples(sample, r):
+    dat = sample.data._asdict()
+    for d in dat:
+        ind = s.sample + '_' + d
+        r[ind] = dat[d]
+    return r
+
+def collect(record,res):
+    r = {}
+    r['CHROM'] = record.CHROM
+    r['POS'] = record.POS
+    r['REF'] = record.REF
+    r['ALT'] = record.ALT
+    r['FORMAT'] = record.FORMAT
+   
+    r = accumulate(record.samples, collect_samples, r)
+
+    res.append(r)
+    return res
+
+
+class VcfConnector(PandasConnector):
+    def __init__(self, fn):
+        vc = vcf.Reader(open(fn,'r'))
+        res = []
+        res = accumulate(vc, collect, res)
+        pd = pandas.DataFrame(res)
+        super(VcfConnector, self).__init__(pd)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
