@@ -368,7 +368,7 @@ class PandasConnector(object):
 def collect_samples(sample, r):
     dat = sample.data._asdict()
     for d in dat:
-        ind = s.sample + '_' + d
+        ind = sample.sample + '__' + d
         r[ind] = dat[d]
     return r
 
