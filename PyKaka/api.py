@@ -33,7 +33,7 @@ class Config:
                 'mongo_host':'mongo',
                 'mongo_port': 27017,
                 'web_host': 'web',
-                'web_port': 80,
+                'web_port': '80',
             }
 
     def __getitem__(self,index):
@@ -160,7 +160,7 @@ class Kaka:
         ser = json.dumps(data)
         config = json.dumps(config)
         opener = urll.build_opener(urll.HTTPHandler)
-        url = 'http://' + host + ":" + port  +  '/send'
+        url = 'http://' + host + ":" + str(port)  +  '/send'
         print(url)
         request = urll.Request(url,
                           data='dat='+ser+"&config="+config+"&first", 
@@ -177,7 +177,7 @@ class Kaka:
        
         data = parse.urlencode({'dat':ser,"config":config})
         data = data.encode('ascii')
-        url = 'http://' + host + ":" + port  +  '/send'
+        url = 'http://' + host + ":" + str(port)  +  '/send'
         print(url)
         request = urll.Request(url,
                           data=data, 
@@ -188,7 +188,7 @@ class Kaka:
 
     @staticmethod
     def get_config(realm, experiment, data_source, cfg=cfg):
-        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/config?experiment=' + experiment  + '&data_source=' + data_source
+        url = 'http://' + cfg['web_host']  + ':' + str(cfg['web_port'])  + '/config?experiment=' + experiment  + '&data_source=' + data_source
         print(url)
         req = urll.urlopen(url)
         config = json.loads(req.read().decode('utf-8'))
@@ -196,21 +196,21 @@ class Kaka:
 
     @staticmethod
     def send_destroy(realm, experiment, key, cfg=cfg):
-        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Destroy'
+        url = 'http://' + cfg['web_host']  + ':' + str(cfg['web_port']) + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Destroy'
         print(url)
         req = urll.urlopen(url) 
         print(req.read())
         
     @staticmethod
     def send_clean(realm, experiment, key, cfg=cfg):
-        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Clean'
+        url = 'http://' + cfg['web_host']  + ':' + str(cfg['web_port'])  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Clean'
         print(url)
         req = urll.urlopen(url) 
         print(req.read())
 
     @staticmethod               
     def send_passwd(realm, experiment, key, cfg=cfg):
-        url = 'http://' + cfg['web_host']  + ':' + cfg['web_port']  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Resetpwd'
+        url = 'http://' + cfg['web_host']  + ':' + str(cfg['web_port'])  + '/destroy?realm=' + realm  + '&experiment=' + experiment + '&password=' + key + '&mode=Resetpwd'
         print(url)
         req = urll.urlopen(url)
         print(req.read())
