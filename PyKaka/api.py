@@ -191,7 +191,7 @@ class Kaka:
         config = {
             "DataSource":{
                 "Format": "python_dict",
-                "ID_Column": "" , 
+                "IdColumn": "" , 
                 "Name": data_source,
                 "Source" : '',
                 "Group": "",
@@ -207,7 +207,7 @@ class Kaka:
                 "Description": "",
                 "Realm": realm,
                 "Password": "",
-                "PI": "",
+                "Pi": "",
                 "Species": "",
                 "Contact": "",
                
