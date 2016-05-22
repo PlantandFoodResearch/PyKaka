@@ -187,6 +187,35 @@ class Kaka:
         print(url.read())
 
     @staticmethod
+    def init_config(realm, experiment="", data_source=""):
+        config = {
+            "DataSource":{
+                "Format": "python_dict",
+                "IdColumn": "" , 
+                "Name": data_source,
+                "Source" : '',
+                "Group": "",
+                "Type": "",
+                "Creator": "",
+                "Mode": "Override",
+                "Contact": "",
+            },
+            "Experiment":{
+                "Name" :experiment,
+                "Code": "",
+                "Date": "",
+                "Description": "",
+                "Realm": realm,
+                "Password": "",
+                "Pi": "",
+                "Species": "",
+                "Contact": "",
+               
+            }
+        }
+        return config
+
+    @staticmethod
     def get_config(realm, experiment, data_source, cfg=cfg):
         url = 'http://' + cfg['web_host']  + ':' + str(cfg['web_port'])  + '/config?experiment=' + experiment  + '&data_source=' + data_source
         print(url)
