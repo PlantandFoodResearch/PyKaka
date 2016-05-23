@@ -371,7 +371,7 @@ def collect_samples(sample, r):
     dat = sample.data._asdict()
     for d in dat:
         ind = sample.sample + '__' + d
-        r[ind] = dat[d]
+        r[ind] = str(dat[d])
     return r
 
 def collect(record,res):
@@ -379,7 +379,7 @@ def collect(record,res):
     r['CHROM'] = record.CHROM
     r['POS'] = record.POS
     r['REF'] = record.REF
-    r['ALT'] = record.ALT
+    r['ALT'] = str(record.ALT)
     r['FORMAT'] = record.FORMAT
    
     r = accumulate(record.samples, collect_samples, r)
