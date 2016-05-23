@@ -106,7 +106,7 @@ def check_config(cfg):
         print("Experiment would like to know who the Pi is")
         return False
 
-   return True
+    return True
 
 
 class Kaka:
