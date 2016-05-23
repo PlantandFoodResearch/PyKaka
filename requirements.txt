@@ -4,4 +4,6 @@ pql
 pymongo
 pyyaml
 xlrd
+simplejson
+vcf
 git+https://github.com/hdzierz/PyKaka.git
