@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pykaka by PlantandFoodResearch</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pykaka</h1>
+        <p>Kaka, Science Data, Cache, Genotype Data</p>
+
+        <p class="view"><a href="https://github.com/PlantandFoodResearch/PyKaka">View the Project on GitHub <small>PlantandFoodResearch/PyKaka</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/PlantandFoodResearch/PyKaka/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/PlantandFoodResearch/PyKaka/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/PlantandFoodResearch/PyKaka">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="python-api-for-kaka" class="anchor" href="#python-api-for-kaka" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python API for Kaka</h1>
+
+<h2>
+<a id="tools-used" class="anchor" href="#tools-used" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tools used</h2>
+
+<ul>
+<li>Python 2/3</li>
+<li>Mongo connectors</li>
+<li>KAKAs restful API</li>
+<li>Jupyter notebooks in form of a Pyrat</li>
+</ul>
+
+<h2>
+<a id="background" class="anchor" href="#background" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Background</h2>
+
+<p>PyKaka is a Python API for downloading data from <a href="https://github.com/hdzierz/Kaka">Kaka</a>. The Python API works from any python 2.7 and 3.5+ python installation. Kaka can be run using docker and comes with a Pyrat pre-installed. If you e.g. load Kaka on server just-a-test.powerplant.pfr.co.nz then your Pyrat jupyter notebookd will run on just-a-test.powerplant.pfr.co.nz:8889. </p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>When using A Kaka docker setup you will have a pyrat running on port 8889. You will find that the Kaka Python API has been pre-installed. Thus, the following import should just work:</p>
+
+<pre><code>from PyKaka.api import *
+</code></pre>
+
+<p>If it does not you need to install it via:</p>
+
+<pre><code>pip install git+https://github.com/hdzierz/PyKaka.git
+</code></pre>
+
+<h2>
+<a id="queries" class="anchor" href="#queries" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Queries</h2>
+
+<p>The syntax for the API is as follows:</p>
+
+<pre><code>Kaka.qry(realm='some_realm', qry='some_query', mode='a-mode') 
+</code></pre>
+
+<p>Whereby:</p>
+
+<p>"realm" can currrently be:</p>
+
+<ul>
+<li>genotype</li>
+<li>design</li>
+<li>experiment</li>
+<li>term</li>
+</ul>
+
+<p>"qry":</p>
+
+<p>This is a pql query. For more info see: <a href="https://github.com/alonho/pql">pql</a></p>
+
+<p>"mode":</p>
+
+<ul>
+<li>pql (default)</li>
+<li>mongo (can perform better for larger queries)</li>
+</ul>
+
+<p>Return value:</p>
+
+<p>The return value is a <a href="http://pandas.pydata.org/">pandas</a> data frame.</p>
+
+<p>Query for an ID:</p>
+
+<p>IDs are unfirntunately a but special as we have a MongoDB in the background. I do promise to simplify this. However, teh query for an ID goes as follows:</p>
+
+<pre><code>dat = Kaka.qry('genotype', "_id=id(a_key)")
+print(dat)
+
+</code></pre>
+
+<p>Or linking to a reference:</p>
+
+<pre><code>dat = Kaka.qry('genotype', "experiment_obj=id(a_key)")
+print(dat)
+
+</code></pre>
+
+<p>Important is that you wrap the 'id' function around the Mongo ID. </p>
+
+<p><strong>Example:</strong></p>
+
+<p>The databse is loaded with a gene expression data set. To obtain these data from Kaka you run:</p>
+
+<pre><code>dat = Kaka.qry('genotype', "experiment=='Gene Expression' and gene=='AT1G02930.2'")
+print(dat)
+</code></pre>
+
+<div>
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th>PFD1001L3R1</th>
+      <th>PFD1001L3R2</th>
+      <th>PFD1001L4R1</th>
+      <th>PFD1001L4R2</th>
+      <th>PFD1002L3R1</th>
+      <th>PFD1002L3R2</th>
+      <th>PFD1002L4R1</th>
+      <th>PFD1002L4R2</th>
+      <th>PFD2501L3R1</th>
+      <th>PFD2501L3R2</th>
+      <th>...</th>
+      <th>experiment</th>
+      <th>gene</th>
+      <th>gene_name</th>
+      <th>group</th>
+      <th>lastupdateddate</th>
+      <th>length</th>
+      <th>name</th>
+      <th>obs</th>
+      <th>statuscode</th>
+      <th>study</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>301</td>
+      <td>301</td>
+      <td>259</td>
+      <td>270</td>
+      <td>281</td>
+      <td>286</td>
+      <td>274</td>
+      <td>266</td>
+      <td>750</td>
+      <td>711</td>
+      <td>...</td>
+      <td>gene_expression</td>
+      <td>AT1G02930.2</td>
+      <td>glutathione S-transferase 6</td>
+      <td>unknown</td>
+      <td>2016-03-04 09:45:42.372</td>
+      <td>866</td>
+      <td>AT1G02930.2</td>
+      <td>{}</td>
+      <td>1</td>
+      <td>56d8a2ca32d3300001f6f338</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 48 columns</p>
+</div>
+
+<p>Gene expression data (any data really) can be supplemented with exprimental design information similar to teh old micro array targets file <a href="http://svitsrv25.epfl.ch/R-doc/library/limma/html/readTargets.html">targets</a>:</p>
+
+<pre><code>dat = Kaka.qry('design', "experiment=='Gene Expression'")
+print(dat)
+</code></pre>
+
+<pre><code>     phenotype  condition         typ
+0  PFD1001L3R1    treated  paired-end
+1  PFD1001L3R2    treated  paired-end
+2  PFD1001L4R1    treated  paired-end
+3  PFD1001L4R2    treated  paired-end
+4  PFD1002L3R1  untreated  paired-end
+5  PFD1002L3R2  untreated  paired-end
+6  PFD1002L4R1  untreated  paired-end
+7  PFD1002L4R2  untreated  paired-end
+</code></pre>
+
+<h2>
+<a id="getting-data-in" class="anchor" href="#getting-data-in" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Data In</h2>
+
+<p>PyKaka has the ability to process data into the database. All data will be associated with an Experiment as well as a DataSource. Each Experiment and DataSource has a unique name. These names are impartant as
+ all operations (delete data, reload data, load data) will be associated with them. There cannot be two Experiments or DataSources with the same name. The Experiment also requires
+some basic meta info (please see config file below).</p>
+
+<p>The method you can use for sending data is called "send" and is part of the Kaka api:</p>
+
+<pre><code>Kaka.send(data,config)
+</code></pre>
+
+<p>Whereby:</p>
+
+<ul>
+<li>data is your data set which can be either a pandas DataFrame or an array of dicts. <strong>The data needs a unique ID column!</strong> </li>
+<li>config is a configuration dict</li>
+</ul>
+
+<p><strong>The configuration dict:</strong></p>
+
+<p>The configuration dict needs the following entries:</p>
+
+<ul>
+<li>Experiment 
+
+<ul>
+<li>Code: A unique name of the experiment the data are associated with. Please use characters, numbers and underscores only.</li>
+<li>Date: The Date of your experiment</li>
+<li>Description: A brief description of your experiment</li>
+<li>Password: Allocate a password. This will protect your experiment from others overriding your data.</li>
+<li>PI: Who is the PI of the experiment</li>
+<li>Realm: The realm your experiment belongs to (e.g. Genotype or Seafood). You cannot create a new one. Please contact admin as above</li>
+</ul>
+</li>
+<li>DataSource
+
+<ul>
+<li>Format: Can only be <strong>python_dict</strong> at the moment</li>
+<li>ID Column: Your data requires a unique ID column</li>
+<li>Name: This can be either a path to a file or a unique name of your data set</li>
+<li>Group: Data might be grouped in an experiment like treatments [optional]</li>
+<li>Creator: Who has craeted the data?</li>
+<li>Contact: A contact email address </li>
+<li>Mode: Can be "Clean", "Override", "Append"</li>
+</ul>
+</li>
+</ul>
+
+<p>Just a wee explanation about the <strong>Mode</strong>:</p>
+
+<p><strong>Override:</strong> This will delete all data in the experiment for your DataSource before your data is loaded. 
+<strong>Clean:</strong> This will delete all data in a DataSource associated with your experiment
+<strong>Append:</strong> Append will not delete anything but append all data you specify to the DataSource in an Experiment 
+<strong>Destroy:</strong> All above modes leave  trace of the experiment and DataSources. Destroy will also clean those.</p>
+
+<p>** Example of a config dict for loading a hapmap into Kaka:**</p>
+
+<pre><code>config = {
+    "DataSource":{
+        "Format": "python_dict",
+        "ID Column": "rs#" , 
+        "Name": '/tmp/',
+        "Group": "None",
+        "Creator": "Helge",
+        "Contact": "helge.dzierzon@plantandfood.co.nz",
+    },
+    "Experiment":{
+        "Code": "HapMap_Test",
+        "Date": "2016-01-07",
+        "Description": "REST test",
+        "Realm": "Genotype",
+        "Mode": "Override",
+        "Password": "inkl67z",
+        "PI": "Willi Wimmer",
+        "Species": "Cymbidium",
+    }
+}
+</code></pre>
+
+<h2>
+<a id="configuring-teh-host-and-port" class="anchor" href="#configuring-teh-host-and-port" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuring teh host and port</h2>
+
+<p>If you don't acccess the pyrat docker instance you  need to configure the host and port. PyKaka uses a cfg structure:</p>
+
+<pre><code>cfg["web_host"] = 'biopvm201.pfr.co.nz'
+cfg["web_port"] = "8001"
+Kaka.qry(..., cfg=cfg)
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/PlantandFoodResearch">PlantandFoodResearch</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
