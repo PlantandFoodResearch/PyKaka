@@ -6,7 +6,7 @@ import pql
 import yaml
 import sys
 import json 
-
+import vcf
 
 MODE = "python2"
 if sys.version_info >= (3, 0):

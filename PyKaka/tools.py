@@ -73,6 +73,8 @@ import csv
 import xlrd
 import json
 import pandas
+import vcf
+
 
 ############################
 ## Data connectors are building on teh algoirthms defined in algorithms.py.
