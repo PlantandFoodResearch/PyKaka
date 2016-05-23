@@ -191,11 +191,12 @@ The configuration dict needs the following entries:
  - Date: The Date of your experiment
  - Description: A brief description of your experiment
  - Password: Allocate a password. This will protect your experiment from others overriding your data.
- - PI: Who is the PI of the experiment
+ - Pi: Who is the PI of the experiment
  - Realm: The realm your experiment belongs to (e.g. Genotype or Seafood). You cannot create a new one. Please contact admin as above
+ - Password: A password or key that will protect your experiment from others tampering with it
 - DataSource
  - Format: Can only be **python_dict** at the moment
- - ID Column: Your data requires a unique ID column
+ - IdColumn: Your data requires a unique ID column
  - Name: This can be either a path to a file or a unique name of your data set
  - Group: Data might be grouped in an experiment like treatments [optional]
  - Creator: Who has craeted the data?
@@ -216,7 +217,7 @@ Just a wee explanation about the **Mode**:
 config = {
     "DataSource":{
         "Format": "python_dict",
-        "ID Column": "rs#" , 
+        "IdColumn": "rs#" , 
         "Name": '/tmp/',
         "Group": "None",
         "Creator": "Helge",
@@ -229,8 +230,9 @@ config = {
         "Realm": "Genotype",
         "Mode": "Override",
         "Password": "inkl67z",
-        "PI": "Willi Wimmer",
+        "Pi": "Willi Wimmer",
         "Species": "Cymbidium",
+        "Password": "your_password"
     }
 }
 ```
@@ -240,9 +242,10 @@ config = {
 If you don't acccess the pyrat docker instance you  need to configure the host and port. PyKaka uses a cfg structure:
 
 ```
-cfg["web_host"] = 'biopvm201.pfr.co.nz'
+cfg["web_host"] = 'wkoppb31.pfr.co.nz'
 cfg["web_port"] = "8001"
 Kaka.qry(..., cfg=cfg)
+Kaka.send(...,cfg=cfg)
 ```
 
 
