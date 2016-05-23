@@ -69,44 +69,44 @@ def check_config(cfg):
         print("Config needs 'Experiment' info")
         return False
 
-#    ds = cfg["DataSource"]
-#    if not "Format" in ds:
-#        print("Config DataSource needs a 'Format'.")
-#        return False
-#    if not "ID_Column" in ds:
-#        print("The DataSource needs a unique 'ID_Column'.")
-#        return False
-#    if not "Name" in ds:
-#        print("The DataSource needs a unique 'Name'. Can be  file name or complete path.")
-#        return False
-#    if not "Creator" in ds:
-#        print("DataSource does not know who has created it (Creator)")
-#        return False
-#    if not "Mode" in ds:
-#        print("DataSource does need a loading 'Mode' (Override, Clean, Append)")
-#        return False
-#    if not "Contact" in ds:
-#        print("DataSource needs a 'Contact' email")
-#        return False
-#
-#    ex = cfg["Experiment"]
-#    if not "Code" in ex:
-#        print("Experiment needs a unique name ('Code')")
-#        return False
-#    if not "Date" in ex:
-#        print("Experiment needs a 'Date'")
-#        return False
-#    if not "Realm" in ex:
-#        print("Experiment needs a 'Realm'")
-#        return False
-#    if not "Password" in ex:
-#        print("Please specify a 'Password' for your experiment. It will protect your data from being accidentally overriden by someone else.")
-#        return False
-#    if not "PI" in ex:
-#        print("Experiment would like to know who the PI is")
-#        return False
-#
-    return True
+    ds = cfg["DataSource"]
+    if not "Format" in ds:
+        print("Config DataSource needs a 'Format'.")
+        return False
+    if not "IdColumn" in ds:
+        print("The DataSource needs a unique 'IdColumn'.")
+        return False
+    if not "Name" in ds:
+        print("The DataSource needs a unique 'Name'. Can be  file name or complete path.")
+        return False
+    if not "Creator" in ds:
+        print("DataSource does not know who has created it (Creator)")
+        return False
+    if not "Mode" in ds:
+        print("DataSource does need a loading 'Mode' (Override, Clean, Append)")
+        return False
+    if not "Contact" in ds:
+        print("DataSource needs a 'Contact' email")
+        return False
+
+    ex = cfg["Experiment"]
+    if not "Code" in ex:
+        print("Experiment needs a unique name ('Code')")
+        return False
+    if not "Date" in ex:
+        print("Experiment needs a 'Date'")
+        return False
+    if not "Realm" in ex:
+        print("Experiment needs a 'Realm'")
+        return False
+    if not "Password" in ex:
+        print("Please specify a 'Password' for your experiment. It will protect your data from being accidentally overriden by someone else.")
+        return False
+    if not "Pi" in ex:
+        print("Experiment would like to know who the Pi is")
+        return False
+
+   return True
 
 
 class Kaka:
