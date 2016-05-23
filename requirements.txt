@@ -5,5 +5,5 @@ pymongo
 pyyaml
 xlrd
 simplejson
-vcf
+PyVcf
 git+https://github.com/hdzierz/PyKaka.git
