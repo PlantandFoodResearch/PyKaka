@@ -170,7 +170,6 @@ class CsvConnector(DataConnector):
     header = None
 
     def __init__(self, fn, delimiter=',', gzipped=False, header=None):
-        Logger.Message("CsvConnector: Loading " + fn)
         self.origin_name = fn
         self.gzipped = gzipped
         self.delimiter = delimiter
